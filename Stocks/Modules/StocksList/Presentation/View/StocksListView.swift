@@ -16,15 +16,17 @@ struct StocksListView: View {
     }
     // MARK: - Body
     var body: some View {
-        VStack(spacing: 20) {
-            HStack {
-                Text("Market")
-                    .font(.title)
-                    .fontWeight(.semibold)
-            }
-            SearchBar(text: $viewModel.searchText)
-            ScrollView(showsIndicators: false) {
-                stocksList()
+        NavigationView {
+            VStack(spacing: 20) {
+                HStack {
+                    Text("Stocks")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                }
+                SearchBar(text: $viewModel.searchText)
+                ScrollView(showsIndicators: false) {
+                    stocksList()
+                }
             }
         }
         .padding(.horizontal)
@@ -34,6 +36,13 @@ struct StocksListView: View {
         }
         .onDisappear {
             viewModel.stopAutoUpdate()
+        }
+        .overlay(alignment: .center) {
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+            }
         }
     }
 }
@@ -48,17 +57,19 @@ extension StocksListView {
         let filtered = viewModel.searchText.isEmpty
             ? viewModel.stocksArray
             : viewModel.stocksArray.filter {
-                ($0.shortName ?? "").localizedCaseInsensitiveContains(viewModel.searchText)
+                ($0.name ?? "").localizedCaseInsensitiveContains(viewModel.searchText)
             }
 
         return ForEach(filtered, id: \.self) { stockItem in
-            StockRow(
-                stock: Stock(
-                    name: stockItem.shortName ?? "",
-                    price: Double(stockItem.priceHint ?? 0),
-                    changePercent: stockItem.regularMarketPrice.raw ?? 0
+            NavigationLink(destination: StockDetailsConfigurator.configureModule(ticker: stockItem.symbol ?? "")) {
+                StockRow(
+                    stock: Stock(
+                        name: stockItem.name ?? "",
+                        price: stockItem.lastsale ?? "",
+                        changePercent: stockItem.netchange ?? ""
+                    )
                 )
-            )
+            }
             Divider()
         }
     }

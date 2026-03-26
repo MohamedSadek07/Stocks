@@ -6,5 +6,6 @@
 //
 
 struct MarketSummaryRequestModel: Encodable {
-    let region: String
+    let page: Int
+    let type: String
 }

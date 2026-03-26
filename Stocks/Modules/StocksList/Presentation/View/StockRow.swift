@@ -11,10 +11,8 @@ import SwiftUI
 struct Stock: Identifiable {
     let id = UUID()
     let name: String
-    let price: Double
-    let changePercent: Double
-
-    var isPositive: Bool { changePercent >= 0 }
+    let price: String
+    let changePercent: String
 }
 
 /// Stock Row View
@@ -27,19 +25,19 @@ struct StockRow: View {
         HStack {
             Text(stock.name)
                 .font(.headline)
-                .foregroundColor(.primary)
- 
+                .foregroundStyle(.black)
+                .multilineTextAlignment(.leading)
+
             Spacer()
  
             VStack(alignment: .trailing, spacing: 2) {
-                Text(String(format: "$%.2f", stock.price))
+                Text(stock.price)
                     .font(.subheadline.monospacedDigit())
-                    .foregroundColor(.primary)
- 
-                Text(String(format: "%@%.2f%%",
-                            stock.isPositive ? "+" : "", stock.changePercent))
+                    .foregroundStyle(.primary)
+
+                Text(stock.changePercent)
                     .font(.caption.monospacedDigit())
-                    .foregroundColor(stock.isPositive ? .green : .red )
+                    .foregroundStyle(.green)
             }
         }
         .padding(.vertical, 4)

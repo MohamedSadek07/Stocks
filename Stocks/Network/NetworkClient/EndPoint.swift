@@ -6,6 +6,6 @@
 //
 
 enum EndPoint {
-    static let stocksList = "market/v2/get-summary"
-    static let stockDetails = "stock/v2/get-summary"
+    static let stocksList = "v2/markets/tickers"
+    static let stockDetails = "v1/markets/stock/modules"
 }

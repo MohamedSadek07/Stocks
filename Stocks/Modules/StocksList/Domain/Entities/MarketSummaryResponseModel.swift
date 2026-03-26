@@ -7,41 +7,43 @@
 
 // MARK: - MarketSummaryResponseModel
 struct MarketSummaryResponseModel: Codable {
-    let marketSummaryAndSparkResponse: MarketSummaryAndSparkResponse
+    let meta: Meta?
+    let body: [MarketSummaryResult]
+
+    init(meta: Meta? = nil,
+         body: [MarketSummaryResult]) {
+        self.meta = meta
+        self.body = body
+    }
 }
 
-// MARK: - MarketSummaryAndSparkResponse
-struct MarketSummaryAndSparkResponse: Codable {
-    let result: [MarketSummaryResult]
-    let error: String?
-}
-
-// MARK: - MarketSummaryResult
+// MARK: - Body
 struct MarketSummaryResult: Codable, Hashable {
-    let fullExchangeName, symbol: String?
-    let gmtOffSetMilliseconds: Int?
-    let language: String?
-    let quoteType: String?
-    let tradeable: Bool?
-    let exchangeTimezoneName: String?
-    let cryptoTradeable: Bool?
-    let firstTradeDateMilliseconds, exchangeDataDelayedBy: Int?
-    let exchangeTimezoneShortName: String?
-    let hasPrePostMarketData: Bool?
-    let marketState: String?
-    let customPriceAlertConfidence: String?
-    let market: String?
-    let priceHint: Int?
-    let exchange: String?
-    let sourceInterval: Int?
-    let shortName: String?
-    let region: String?
-    let triggerable: Bool?
-    let regularMarketPrice: RegularMarket
+    let symbol, name, lastsale, netchange: String?
+    let pctchange, marketCap: String?
+
+    init(
+        symbol: String? = nil,
+        name: String? = nil,
+        lastsale: String?  = nil,
+        netchange: String? = nil,
+        pctchange: String? = nil,
+        marketCap: String?  = nil
+    ) {
+        self.symbol = symbol
+        self.name = name
+        self.lastsale = lastsale
+        self.netchange = netchange
+        self.pctchange = pctchange
+        self.marketCap = marketCap
+    }
 }
 
-// MARK: - RegularMarket
-struct RegularMarket: Codable, Hashable {
-    let raw: Double?
-    let fmt: String?
+// MARK: - Meta
+struct Meta: Codable {
+    let version: String?
+    let status: Int?
+    let copywrite: String?
+    let totalrecords: Int?
+    let headers: MarketSummaryResult?
 }

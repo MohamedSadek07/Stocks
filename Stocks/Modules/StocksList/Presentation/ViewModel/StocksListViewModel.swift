@@ -27,7 +27,7 @@ class StocksListViewModel: ObservableObject {
     private func getMarketSummary() {
         guard !isLoading else { return }
         isLoading = true
-        stocksListUseCase.getStocks(request: MarketSummaryRequestModel(region: "US"))
+        stocksListUseCase.getStocks(request: MarketSummaryRequestModel(page: 1, type: "STOCKS"))
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else {return}
                 self.isLoading = false
@@ -39,7 +39,7 @@ class StocksListViewModel: ObservableObject {
                 }
             }, receiveValue: { [weak self] response in
                 guard let self = self else {return}
-                stocksArray = response.marketSummaryAndSparkResponse.result
+                stocksArray = response.body
             }).store(in: &cancelable)
     }
     func callGetMarketSummary() {

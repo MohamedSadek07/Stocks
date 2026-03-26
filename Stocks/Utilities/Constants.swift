@@ -6,5 +6,5 @@
 //
 
 final class Constants {
-    static let baseURL = "https://yh-finance.p.rapidapi.com/"
+    static let baseURL = "https://yahoo-finance15.p.rapidapi.com/api/"
 }

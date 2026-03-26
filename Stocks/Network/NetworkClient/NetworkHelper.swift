@@ -17,8 +17,8 @@ class NetworkHelper {
     static func getHeaders() -> [String: String] {
             let headers = [
                 HTTPHeaderField.contentType.rawValue: "application/json",
-                HTTPHeaderField.apiHost.rawValue: "yh-finance.p.rapidapi.com",
-                HTTPHeaderField.apiKey.rawValue: "f6302732c9msh50913f736f96c1ep143fe4jsnf7726c6abe7a",
+                HTTPHeaderField.apiHost.rawValue: "yahoo-finance15.p.rapidapi.com",
+                HTTPHeaderField.apiKey.rawValue: "1b10a00ddbmsh88d3e6e975e113cp1abe99jsn9a62c642845b",
             ]
             return headers
     }
