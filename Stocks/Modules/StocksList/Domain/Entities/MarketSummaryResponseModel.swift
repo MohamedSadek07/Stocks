@@ -12,12 +12,12 @@ struct MarketSummaryResponseModel: Codable {
 
 // MARK: - MarketSummaryAndSparkResponse
 struct MarketSummaryAndSparkResponse: Codable {
-    let result: [Result]
+    let result: [MarketSummaryResult]
     let error: String?
 }
 
-// MARK: - Result
-struct Result: Codable {
+// MARK: - MarketSummaryResult
+struct MarketSummaryResult: Codable, Hashable {
     let fullExchangeName, symbol: String?
     let gmtOffSetMilliseconds: Int?
     let language: String?
@@ -37,4 +37,11 @@ struct Result: Codable {
     let shortName: String?
     let region: String?
     let triggerable: Bool?
+    let regularMarketPrice: RegularMarket
+}
+
+// MARK: - RegularMarket
+struct RegularMarket: Codable, Hashable {
+    let raw: Double?
+    let fmt: String?
 }

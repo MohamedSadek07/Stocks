@@ -10,15 +10,22 @@ import Combine
 
 class StocksListViewModel: ObservableObject {
 
+    // Variables
     private let stocksListUseCase: StocksListUseCaseProtocol
     private var cancelable: Set<AnyCancellable> = []
+    private var timerCancellable: AnyCancellable?
+    // Published Variables
     @Published var isLoading = false
+    @Published var stocksArray: [MarketSummaryResult] = []
+    @Published var searchText = ""
 
+    // MARK: - init
     init(stocksListUseCase: StocksListUseCaseProtocol) {
         self.stocksListUseCase = stocksListUseCase
     }
-
-    func getMarketSummary() {
+    // MARK: - Methods
+    private func getMarketSummary() {
+        guard !isLoading else { return }
         isLoading = true
         stocksListUseCase.getStocks(request: MarketSummaryRequestModel(region: "US"))
             .sink(receiveCompletion: { [weak self] completion in
@@ -32,7 +39,20 @@ class StocksListViewModel: ObservableObject {
                 }
             }, receiveValue: { [weak self] response in
                 guard let self = self else {return}
-                print("response", response)
+                stocksArray = response.marketSummaryAndSparkResponse.result
             }).store(in: &cancelable)
+    }
+    func callGetMarketSummary() {
+        getMarketSummary()
+    }
+    func startAutoUpdate() {
+        timerCancellable = Timer.publish(every: 8, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.getMarketSummary()
+            }
+    }
+    func stopAutoUpdate() {
+        timerCancellable?.cancel()
     }
 }
